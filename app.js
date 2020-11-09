@@ -8,6 +8,10 @@ const app = express()
 const bodyParser = require('body-parser')
 const Joke = require('./models/Joke')
 
+// Skal slettes
+let joke1 = new Joke({ setup: 'Hvorfor skulle anden dø?', punchline: 'Kun førstfødte måtte leve' })
+joke1.save()
+
 // Starter Mongoose database
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {
