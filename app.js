@@ -8,12 +8,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const Joke = require('./models/Joke')
 
-// Skal slettes
-let joke2 = new Joke({ setup: 'Hvad er det sjoveste dyr?', punchline: 'En HAre' })
-joke2.save()
-let joke3 = new Joke({ setup: 'Hvad er det største dyr?', punchline: 'En orm' })
-joke3.save()
-
 // Starter Mongoose database
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {

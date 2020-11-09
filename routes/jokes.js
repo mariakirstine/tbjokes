@@ -9,8 +9,21 @@ router.get('/', async (request, response) => {
 })
 
 // Poster en ny joke
-router.post('/', (request, response) => {
-    response.send('Post Jokes')
+router.post('/', async (request, response) => {
+    const setup = request.body.setup
+    const punchline = request.body.punchline
+    console.log(setup);
+    console.log(punchline);
+    try {
+        if (setup != null && setup !== '' && punchline != null && punchline !== '') {
+            const newJoke = new Joke({ setup: setup, punchline: punchline })
+            newJoke.save()
+            const jokes = await Joke.find({})
+            response.render('jokes', { jokes: jokes })
+        }
+    } catch {
+
+    }
 })
 
 module.exports = router
