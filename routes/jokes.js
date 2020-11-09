@@ -6,6 +6,11 @@ const Joke = require('../models/Joke')
 router.get('/', async (request, response) => {
     const jokes = await Joke.find({})
     response.render('jokes', { jokes: jokes })
+    try {
+
+    } catch {
+
+    }
 })
 
 // Poster en ny joke

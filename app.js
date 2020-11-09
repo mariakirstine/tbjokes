@@ -30,6 +30,8 @@ const jokesRouter = require('./routes/jokes')
 app.use('/jokes', jokesRouter)
 const otherSitesRouter = require('./routes/othersites')
 app.use('/othersites', otherSitesRouter)
+const apiRouter = require('./routes/api')
+app.use('/api', apiRouter)
 
 // Sætter server online
 app.listen(process.env.PORT, console.log('Server running'))

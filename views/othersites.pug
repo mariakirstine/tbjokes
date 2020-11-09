@@ -1,4 +1,8 @@
 extends layout
 
 block content
-    
+     table
+        each otherSite in otherSites
+            tr
+                td
+                    a(href=otherSite.address) #{otherSite.name}
