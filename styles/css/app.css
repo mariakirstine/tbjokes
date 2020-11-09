@@ -1,0 +1,33 @@
+body {
+    margin: 1em;
+    background-color:plum;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+h1 {
+    color: purple
+}
+
+input {
+    margin-bottom: 0.5em
+}
+
+button {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-weight: bold;
+    background-color: rgb(221, 189, 221);
+    color: purple
+}
+
+a:link {
+    color: darkorchid
+}
+
+td {
+    padding-bottom: 0.5em;
+}
+
+td:nth-child(even) {
+    color: rgb(82, 0, 82);
+    padding-left: 2em;
+}
