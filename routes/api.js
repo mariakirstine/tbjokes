@@ -9,8 +9,10 @@ router.get('/jokes', async (request, response) => {
         const jokes = await Joke.find({})
         const jokesJSON = JSON.stringify(jokes)
         response.send(jokesJSON)
-    } catch {
-        response.status(408).send({ error: err.details })
+    } catch (error) {
+        // VÆLG EN
+        response.status(408).send({ error: error.details })
+        response.status(408).json({ error: error.details })
     }
 })
 
@@ -18,11 +20,17 @@ router.get('/jokes', async (request, response) => {
 router.get('/othersites', async (request, response) => {
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        let data = await otherSites.json()
-        let dataJSON = JSON.stringify(data)
-        response.send(dataJSON)
+        if (otherSites.status >= 200 && otherSites.status <= 399) {
+            let data = await otherSites.json()
+            let dataJSON = JSON.stringify(data)
+            response.send(dataJSON)
+        } else {
+            throw new Error(otherSites)
+        }
     } catch (error) {
-        // MANGLER
+        // VÆLG EN
+        response.status(error.status).send({ error: error.details })
+        response.status(error.status).json({ error: error.details })
     }
 })
 
@@ -30,27 +38,33 @@ router.get('/othersites', async (request, response) => {
 router.get('/othersites/:site', async (request, response) => {
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        let data = await otherSites.json()
-        let sitename = request.params.site
-        let url
-        let element
-        for (let i = 0; i < data.length; i++) {
-            element = data[i];
-            if (element.name.toLowerCase() === sitename.toLowerCase()) {
-                url = element.address
-                break
+        if (otherSites.status >= 200 && otherSites.status <= 399) {
+            let data = await otherSites.json()
+            let sitename = request.params.site
+            let url
+            let element
+            for (let i = 0; i < data.length; i++) {
+                element = data[i];
+                if (element.name.toLowerCase() === sitename.toLowerCase()) {
+                    url = element.address
+                    break
+                }
             }
+            console.log(url)
+            if (!url) {
+                throw new Error()
+            }
+            let chosenSite = await fetch(url + 'api/jokes')
+            let chosenData = await chosenSite.json()
+            let chosenDataJSON = JSON.stringify(chosenData)
+            response.send(chosenDataJSON)
+        } else {
+            throw new Error(otherSites)
         }
-        console.log(url)
-        if (!url) {
-            throw new Error()
-        }
-        let chosenSite = await fetch(url + 'api/jokes')
-        let chosenData = await chosenSite.json()
-        let chosenDataJSON = JSON.stringify(chosenData)
-        response.send(chosenDataJSON)
     } catch (error) {
-        // MANGLER
+        // VÆLG EN
+        response.status(error.status).send({ error: error.details })
+        response.status(error.status).json({ error: error.details })
     }
 })
 

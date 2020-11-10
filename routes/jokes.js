@@ -22,10 +22,12 @@ router.post('/', async (request, response) => {
             newJoke.save()
             const jokes = await Joke.find({})
             response.render('jokes', { jokes: jokes })
+        } else {
+            throw new Error
         }
     } catch {
         const jokes = await Joke.find({})
-        response.render('jokes', { jokes: jokes, errorMessage: 'An incident occurred' })
+        response.render('jokes', { jokes: jokes, errorMessage: 'Your joke had the wrong format' })
     }
 })
 
