@@ -27,7 +27,25 @@ td {
     padding-bottom: 0.5em;
 }
 
-td:nth-child(even) {
+#punchline {
     color: rgb(82, 0, 82);
     padding-left: 2em;
+}
+
+#othercolA, #othercolB {
+    text-align: center;
+}
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.topnav a {
+    float: left;
+    color: #f80909;
+    text-align: left;
+    padding: 1px 20px;
+    text-decoration: none;
+    font-size: 17px;
 }

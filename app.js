@@ -28,6 +28,8 @@ app.use(bodyParser.json())
 app.set('view engine', 'pug')
 
 // De forskellige routes
+const rootRouter = require('./routes/tbjokes')
+app.use('/', rootRouter)
 const jokesRouter = require('./routes/jokes')
 app.use('/jokes', jokesRouter)
 const otherSitesRouter = require('./routes/othersites')

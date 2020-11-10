@@ -2,8 +2,16 @@ extends layout
 
 block content
     h1 Other sites
-     table
+    table
+        tr
+            th Site name
+            th Their page
+            th Their jokes
         each otherSite in otherSites
-            tr
-                td
-                    a(href=otherSite.address) #{otherSite.name}
+            if (otherSite.name)
+                tr
+                    td #{otherSite.name}
+                    td#othercolA
+                        a(href=otherSite.address) 🏠
+                    td#othercolB
+                        a(href='/othersites/' + otherSite.name) 😂
