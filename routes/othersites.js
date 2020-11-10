@@ -4,13 +4,12 @@ const fetch = require("node-fetch")
 
 // Henter /othersites
 router.get('/', async (request, response) => {
-    let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-    let data = await otherSites.json()
-    response.render('othersites', { otherSites: data })
     try {
-
+        let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
+        let data = await otherSites.json()
+        response.render('othersites', { otherSites: data })
     } catch {
-
+        response.render('othersites', { otherSites: [], errorMessage: 'An incident occurred' })
     }
 })
 
@@ -24,21 +23,23 @@ router.get('/:site', async (request, response) => {
         let element
         for (let i = 0; i < data.length; i++) {
             element = data[i];
-            // IF ELEMENT.NAME == ''
-            if (element.name.toLowerCase() === sitename.toLowerCase()) {
+            if (element.name === sitename) {
                 url = element.address
-                console.log(url);
                 break
             }
-            // response.send('Fejl') // Skal have oprettet en fejlside
         }
-        console.log(url)
-        // if url = null
-        let chosenSite = await fetch(url + '/api/jokes')
+        // Hvis url aldrig bliver sat (der findes ikke en side med det navn)
+        if (!url) {
+            throw new Error()
+        }
+        let chosenSite = await fetch(url + 'api/jokes')
         let chosenData = await chosenSite.json()
+        console.log(chosenData);
         response.render('jokes', { jokes: chosenData })
     } catch (error) {
-        console.log(error)
+        let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
+        let data = await otherSites.json()
+        response.render('othersites', { otherSites: data, errorMessage: 'An incident occurred' })
     }
 })
 

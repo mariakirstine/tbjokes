@@ -3,8 +3,9 @@ html
         include ../styles/css/app.css
     head  
         .topnav
-            a(href='/Jokes') home 
-            a(href='/othersites') othersites        
+            a(href='/jokes') Jokes 
+            a(href='/othersites') Other sites        
         title Jokes fra Tais' Biler
     body
+        include errorMessage
         block content

@@ -36,6 +36,10 @@ const otherSitesRouter = require('./routes/othersites')
 app.use('/othersites', otherSitesRouter)
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
+// Fanger alle forkert stavede versioner af sidens extension
+app.get('/:site', (request, response) => {
+    response.redirect('/')
+})
 
 // Sætter server online
 app.listen(process.env.PORT, console.log('Server running'))

@@ -23,6 +23,16 @@ a:link {
     color: darkorchid
 }
 
+.emojilink {
+    text-decoration: none;
+}
+
+#error {
+    font-weight: bold;
+    font-size: larger;
+    color: mediumaquamarine
+}
+
 td {
     padding-bottom: 0.5em;
 }
@@ -37,15 +47,15 @@ td {
 }
 
 .topnav {
-    background-color: #333;
     overflow: hidden;
 }
 
 .topnav a {
     float: left;
-    color: #f80909;
+    color: purple;
     text-align: left;
     padding: 1px 20px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: large;
+    text-decoration: underline;
 }
