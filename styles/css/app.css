@@ -1,6 +1,6 @@
 body {
-    padding: 1em;
-    margin: 1em;
+    padding: 10;
+    margin: 10;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
@@ -14,11 +14,13 @@ body::before {
     background-image: 
     radial-gradient(circle farthest-side at top right, transparent, #0D64FF), radial-gradient(ellipse farthest-corner at 0% 100%, transparent, #FF00A0);
     animation:bg-change 10s infinite;
+    padding: -20;
+    margin: -20;
 }
 
 @keyframes bg-change {
 0%, 100% {
-    filter:hue-rotate(0deg);
+    filter:hue-rotate(180deg);
 }
 50% {
     filter:hue-rotate(-360deg);
@@ -26,18 +28,24 @@ body::before {
 }
 
 h1 {
-    color: purple
+    color: purple;
+    text-shadow:
+    -1px -1px 0 black,
+    /* 1px -1px 0 black, */
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 
 input {
-    margin-bottom: 0.5em
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
 }
 
 button {
     font-family: "Comic Sans MS", cursive, sans-serif;
     font-weight: bold;
     background-color: rgb(221, 189, 221);
-    color: purple
+    color: purple;
 }
 
 a:link {
@@ -79,4 +87,9 @@ td {
     text-decoration: none;
     font-size: large;
     text-decoration: underline;
+    text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
