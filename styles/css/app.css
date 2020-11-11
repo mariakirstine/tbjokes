@@ -1,7 +1,28 @@
 body {
+    padding: 1em;
     margin: 1em;
-    background-color:plum;
     font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+body::before {
+    content:""; /* required for ::before */
+    position:fixed; /* don't scroll with page */
+    z-index:-100; /* place behind elements on page */
+    width:100%;
+    height:100%;
+    background-color:plum;
+    background-image: 
+    radial-gradient(circle farthest-side at top right, transparent, #0D64FF), radial-gradient(ellipse farthest-corner at 0% 100%, transparent, #FF00A0);
+    animation:bg-change 10s infinite;
+}
+
+@keyframes bg-change {
+0%, 100% {
+    filter:hue-rotate(0deg);
+}
+50% {
+    filter:hue-rotate(-360deg);
+}
 }
 
 h1 {
