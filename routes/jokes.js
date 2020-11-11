@@ -8,24 +8,20 @@ router.get('/', async (request, response) => {
         const jokes = await Joke.find({})
         response.render('jokes', { jokes: jokes })
     } catch {
-        response.render('jokes', { jokes: [], errorMessage: 'An incident occurred' })
+        response.render('jokes', { jokes: [], errorMessage: 'Jokes could not be loaded' })
     }
 })
 
 // Poster en ny joke
 router.post('/', async (request, response) => {
+    const setup = request.body.setup
+    const punchline = request.body.punchline
+    const newJoke = new Joke({ setup: setup, punchline: punchline })
     try {
-        const setup = request.body.setup
-        const punchline = request.body.punchline
-        if (setup != null && setup !== '' && punchline != null && punchline !== '') {
-            const newJoke = new Joke({ setup: setup, punchline: punchline })
-            newJoke.save()
-            const jokes = await Joke.find({})
-            response.render('jokes', { jokes: jokes })
-        } else {
-            throw new Error
-        }
-    } catch {
+        await newJoke.save()
+        const jokes = await Joke.find({})
+        response.render('jokes', { jokes: jokes })
+    } catch (error) {
         const jokes = await Joke.find({})
         response.render('jokes', { jokes: jokes, errorMessage: 'Your joke had the wrong format' })
     }

@@ -8,16 +8,21 @@ router.get('/', async (request, response) => {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
         let data = await otherSites.json()
         response.render('othersites', { otherSites: data })
-    } catch {
-        response.render('othersites', { otherSites: [], errorMessage: 'An incident occurred' })
+    } catch (error) {
+        if (error.code === 'ENOTFOUND') {
+            response.render('othersites', { otherSites: [], errorMessage: 'Server down' })
+        } else {
+            response.render('othersites', { otherSites: [], errorMessage: 'An incident occurred' })
+        }
     }
 })
 
 // Henter noget fra en specifik ekstern side
 router.get('/:site', async (request, response) => {
+    let data = []
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        let data = await otherSites.json()
+        data = await otherSites.json()
         let sitename = request.params.site
         let url
         let element
@@ -30,16 +35,20 @@ router.get('/:site', async (request, response) => {
         }
         // Hvis url aldrig bliver sat (der findes ikke en side med det navn)
         if (!url) {
-            throw new Error()
+            throw new Error('Site does not exist')
+        }
+        if (url.substr(-1) !== '/') {
+            url = url + '/';
         }
         let chosenSite = await fetch(url + 'api/jokes')
         let chosenData = await chosenSite.json()
-        console.log(chosenData);
         response.render('jokes', { jokes: chosenData })
     } catch (error) {
-        let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        let data = await otherSites.json()
-        response.render('othersites', { otherSites: data, errorMessage: 'An incident occurred' })
+        if (error.message === 'Site does not exist') {
+            response.render('othersites', { otherSites: data, errorMessage: 'The chosen site does not exist' })
+        } else {
+            response.render('othersites', { otherSites: [], errorMessage: 'An incident occurred' })
+        }
     }
 })
 

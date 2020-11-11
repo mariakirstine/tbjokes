@@ -10,8 +10,6 @@ router.get('/jokes', async (request, response) => {
         const jokesJSON = JSON.stringify(jokes)
         response.send(jokesJSON)
     } catch (error) {
-        // VÆLG EN
-        response.status(408).send({ error: error.details })
         response.status(408).json({ error: error.details })
     }
 })
@@ -20,16 +18,10 @@ router.get('/jokes', async (request, response) => {
 router.get('/othersites', async (request, response) => {
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        if (otherSites.status >= 200 && otherSites.status <= 399) {
-            let data = await otherSites.json()
-            let dataJSON = JSON.stringify(data)
-            response.send(dataJSON)
-        } else {
-            throw new Error(otherSites)
-        }
+        let data = await otherSites.json()
+        let dataJSON = JSON.stringify(data)
+        response.send(dataJSON)
     } catch (error) {
-        // VÆLG EN
-        response.status(error.status).send({ error: error.details })
         response.status(error.status).json({ error: error.details })
     }
 })
@@ -38,38 +30,50 @@ router.get('/othersites', async (request, response) => {
 router.get('/othersites/:site', async (request, response) => {
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
-        if (otherSites.status >= 200 && otherSites.status <= 399) {
-            let data = await otherSites.json()
-            let sitename = request.params.site
-            let url
-            let element
-            for (let i = 0; i < data.length; i++) {
-                element = data[i];
-                if (element.name.toLowerCase() === sitename.toLowerCase()) {
-                    url = element.address
-                    break
-                }
+        let data = await otherSites.json()
+        let sitename = request.params.site
+        let url
+        let element
+        for (let i = 0; i < data.length; i++) {
+            element = data[i];
+            if (element.name.toLowerCase() === sitename.toLowerCase()) {
+                url = element.address
+                break
             }
-            console.log(url)
-            if (!url) {
-                throw new Error()
-            }
-            let chosenSite = await fetch(url + 'api/jokes')
-            let chosenData = await chosenSite.json()
-            let chosenDataJSON = JSON.stringify(chosenData)
-            response.send(chosenDataJSON)
-        } else {
-            throw new Error(otherSites)
         }
+        // Hvis url aldrig bliver sat (der findes ikke en side med det navn)
+        if (!url) {
+            throw new Error()
+        }
+        if (url.substr(-1) !== '/') {
+            url = url + '/';
+        }
+        let chosenSite = await fetch(url + 'api/jokes')
+        let chosenData = await chosenSite.json()
+        let chosenDataJSON = JSON.stringify(chosenData)
+        response.send(chosenDataJSON)
     } catch (error) {
-        // VÆLG EN
-        response.status(error.status).send({ error: error.details })
         response.status(error.status).json({ error: error.details })
     }
 })
 
-router.post('/api/jokes', async (request, response) => {
-    // SPØRG KAJ
+// Poster via API requests
+router.post('/jokes', async (request, response) => {
+    const newJoke = new Joke({
+        setup: request.body.setup,
+        punchline: request.body.punchline,
+    })
+    try {
+        await newJoke.save();
+        const jokes = await Joke.find({})
+        response.status(201).json(newJoke)
+    } catch (error) {
+        if (error.status < 500) {
+            response.status(error.status).json({ error: error.details })
+        } else {
+            response.status(error.status).json({ message: 'forkert format' })
+        }
+    }
 })
 
 module.exports = router
