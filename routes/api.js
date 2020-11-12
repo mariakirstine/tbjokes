@@ -36,7 +36,7 @@ router.get('/otherjokes/:site', async (request, response) => {
         let element
         for (let i = 0; i < data.length; i++) {
             element = data[i];
-            if (element.name.toLowerCase() === sitename.toLowerCase()) {
+            if (element.name && element.name.toLowerCase() === sitename.toLowerCase()) {
                 url = element.address
                 break
             }
