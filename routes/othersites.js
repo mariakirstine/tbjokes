@@ -28,7 +28,7 @@ router.get('/:site', async (request, response) => {
         let element
         for (let i = 0; i < data.length; i++) {
             element = data[i];
-            if (element.name === sitename) {
+            if (element.name.toLowerCase() === sitename.toLowerCase()) {
                 url = element.address
                 break
             }

@@ -27,7 +27,7 @@ router.get('/othersites', async (request, response) => {
 })
 
 // Henter api (JSON) for et andet sites jokes
-router.get('/othersites/:site', async (request, response) => {
+router.get('/otherjokes/:site', async (request, response) => {
     try {
         let otherSites = await fetch('https://krdo-joke-registry.herokuapp.com/api/services')
         let data = await otherSites.json()
